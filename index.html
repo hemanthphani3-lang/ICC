@@ -2630,18 +2630,50 @@
                     updateBatteryUI(batterySOC, voltage);
                 }
 
+                let simTimeSec = 0;
+                let simCurrentTemp = 32.4;
+
                 // Start the simulation loop
                 simulationInterval = setInterval(() => {
-                    // Generate simulated telemetry values (steady state with no movement)
-                    speed = 0;
-                    rpm = 0;
+                    // Drive Cycle Simulation (30-second cycle)
+                    const cycleTime = simTimeSec % 30;
+                    simTimeSec++;
                     
-                    batterySOC -= 0.05;
+                    if (cycleTime < 5) {
+                        // Phase 1: Idle (0-5s)
+                        rpm = 0;
+                        speed = 0;
+                    } else if (cycleTime < 12) {
+                        // Phase 2: Acceleration (5-12s)
+                        const t = cycleTime - 5;
+                        rpm = Math.round((t / 7) * 2200); // Accelerates to 2200 RPM
+                        speed = Math.round((t / 7) * 45); // Speed up to 45 km/h
+                    } else if (cycleTime < 18) {
+                        // Phase 3: Cruising (12-18s)
+                        rpm = 2200 + Math.round((Math.random() - 0.5) * 50); // slight flutter
+                        speed = 45;
+                    } else if (cycleTime < 24) {
+                        // Phase 4: Deceleration (18-24s)
+                        const t = cycleTime - 18;
+                        rpm = Math.max(0, Math.round(2200 - (t / 6) * 2200));
+                        speed = Math.max(0, Math.round(45 - (t / 6) * 45));
+                    } else {
+                        // Phase 5: Stationary (24-30s)
+                        rpm = 0;
+                        speed = 0;
+                    }
+
+                    batterySOC -= 0.02; // slow discharge
                     if (batterySOC <= 15) {
                         batterySOC = 99;
                     }
-                    // Voltage is scaled to match SOC (volt = SOC * 16.5 / 100)
-                    voltage = (batterySOC / 100) * 16.5;
+                    
+                    // Base voltage scaled to SOC (e.g. 15.18V for 92% SOC)
+                    const baseVoltage = (batterySOC / 100) * 16.5;
+                    // Voltage sag proportional to RPM
+                    const voltageSag = (rpm / 2200) * 0.8; // max 0.8V sag
+                    voltage = baseVoltage - voltageSag + (Math.random() - 0.5) * 0.05;
+                    if (voltage < 0) voltage = 0;
 
                     // Increment local simulation trip distance and query route coordinates (on land, following streets)
                     const distanceIncrement = speed / 3600;
@@ -2650,15 +2682,24 @@
                     mapLatitude = routeCoords[0];
                     mapLongitude = routeCoords[1];
 
-                    // Calculate realistic current: negative value when discharging
-                    const simulatedCurrent = speed > 0 ? -(speed * 0.15 + 0.5 + (Math.random() - 0.5) * 0.1) : -0.2;
+                    // Calculate realistic current: negative value when discharging, proportional to speed/RPM
+                    const simulatedCurrent = speed > 0 ? -(speed * 0.12 + 0.3 + (Math.random() - 0.5) * 0.1) : -0.2;
+
+                    // Heat generation: Temp rises when RPM > 0, cools down towards ambient 28.0 when RPM == 0
+                    if (rpm > 0) {
+                        simCurrentTemp += (rpm / 2200) * 0.12; // temp rises
+                    } else {
+                        simCurrentTemp -= (simCurrentTemp - 28.0) * 0.03; // temp cools
+                    }
+                    // Clamp simulated temperature to a realistic range
+                    simCurrentTemp = Math.max(28.0, Math.min(42.0, simCurrentTemp));
 
                     const payload = {
                         RPM: rpm,
-                        V: voltage,
+                        V: parseFloat(voltage.toFixed(2)),
                         C: parseFloat(simulatedCurrent.toFixed(2)),
-                        T: 32.4 + (Math.random() - 0.5),
-                        VIB: 0,
+                        T: parseFloat((simCurrentTemp + (Math.random() - 0.5) * 0.1).toFixed(2)),
+                        VIB: rpm > 0 ? (Math.random() > 0.85 ? 1 : 0) : 0, // minor vibration shock when moving
                         RELAY: 1,
                         LAT: mapLatitude,
                         LON: mapLongitude
