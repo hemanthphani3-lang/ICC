@@ -557,18 +557,18 @@
                     <div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-3xl p-md flex flex-col hover-elevate">
                         <div class="flex justify-between items-start mb-lg">
                             <div>
-                                <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Telemetry Trends (RPM, Temp, Voltage)</h3>
+                                <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Live Telemetry Analytics</h3>
                                 <div class="flex items-center gap-4 mt-2">
                                     <div class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant">
-                                        <span class="w-3 h-1.5 bg-[#0284c7] rounded-full"></span>
+                                        <span class="w-3 h-1.5 bg-[#00d5ff] rounded-full"></span>
                                         <span>RPM</span>
                                     </div>
                                     <div class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant">
-                                        <span class="w-3 h-1.5 bg-[#dc2626] rounded-full"></span>
+                                        <span class="w-3 h-1.5 bg-[#ff4d4d] rounded-full"></span>
                                         <span>Temperature</span>
                                     </div>
                                     <div class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant">
-                                        <span class="w-3 h-1.5 bg-[#16a34a] rounded-full"></span>
+                                        <span class="w-3 h-1.5 bg-[#00e575] rounded-full"></span>
                                         <span>Voltage</span>
                                     </div>
                                 </div>
@@ -579,45 +579,67 @@
                                 <button class="px-sm py-xs text-on-surface-variant hover:bg-surface-container-high rounded">30d</button>
                             </div>
                         </div>
-                        <div class="flex-1 min-h-[300px] relative data-inset rounded-lg flex items-end" style="padding-top: 8px; padding-bottom: 8px; padding-right: 8px; padding-left: 80px;">
+                        <div id="chart-container" class="flex-1 min-h-[300px] relative rounded-lg flex items-end" style="padding-top: 8px; padding-bottom: 8px; padding-right: 8px; padding-left: 80px; background-color: #0b111e; border: 1px solid #1e293b;">
                             <!-- Y-Axis Labels (Color Coded for RPM, Temp, Voltage) -->
-                            <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 64px; z-index: 10; border-right: 1px solid rgba(186, 201, 204, 0.3); padding-right: 8px;">
-                                <!-- Top (y = 50 line level -> 16.67%) -->
-                                <div style="position: absolute; right: 8px; top: 16.67%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: bold;">
-                                    <span style="color: #0284c7;">5000 RPM</span>
-                                    <span style="color: #dc2626;">50 °C</span>
-                                    <span style="color: #16a34a;">400 V</span>
-                                </div>
-                                <!-- Middle (y = 150 line level -> 50%) -->
-                                <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: bold;">
-                                    <span style="color: #0284c7;">2500 RPM</span>
-                                    <span style="color: #dc2626;">30 °C</span>
-                                    <span style="color: #16a34a;">200 V</span>
-                                </div>
-                                <!-- Bottom (y = 250 line level -> 83.33%) -->
-                                <div style="position: absolute; right: 8px; top: 83.33%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: bold;">
-                                    <span style="color: #0284c7;">0 RPM</span>
-                                    <span style="color: #dc2626;">10 °C</span>
-                                    <span style="color: #16a34a;">0 V</span>
-                                </div>
+                            <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 64px; z-index: 10; border-right: 1px solid rgba(255, 255, 255, 0.1); padding-right: 8px;">
+                                <!-- 36 -> top: 6.67% -->
+                                <div style="position: absolute; right: 8px; top: 6.67%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #94a3b8;">36</div>
+                                <!-- 27 -> top: 28.33% -->
+                                <div style="position: absolute; right: 8px; top: 28.33%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #94a3b8;">27</div>
+                                <!-- 18 -> top: 50.00% -->
+                                <div style="position: absolute; right: 8px; top: 50.00%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #94a3b8;">18</div>
+                                <!-- 9 -> top: 71.67% -->
+                                <div style="position: absolute; right: 8px; top: 71.67%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #94a3b8;">9</div>
+                                <!-- 0 -> top: 93.33% -->
+                                <div style="position: absolute; right: 8px; top: 93.33%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #94a3b8;">0</div>
                             </div>
                             <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 300">
-                                <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="50" y2="50"></line>
-                                <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="150" y2="150"></line>
-                                <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="250" y2="250"></line>
+                                <!-- Horizontal Grid Lines (Dotted) -->
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="20" y2="20"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="85" y2="85"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="150" y2="150"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="215" y2="215"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="280" y2="280"></line>
+                                
+                                <!-- Vertical Grid Lines (Dotted) -->
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="200" x2="200" y1="20" y2="280"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="400" x2="400" y1="20" y2="280"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="600" x2="600" y1="20" y2="280"></line>
+                                <line stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,3" x1="800" x2="800" y1="20" y2="280"></line>
+
                                 <!-- RPM (Blue) -->
-                                <path id="trend-line-rpm" class="graph-line" d="M0,200 Q100,100 200,150 T400,100 T600,140 T800,90 T1000,110" fill="none" stroke="#0284c7" stroke-width="2.5"></path>
+                                <path id="trend-line-rpm" fill="none" stroke="#00d5ff" stroke-width="2"></path>
                                 <!-- Temp (Red) -->
-                                <path id="trend-line-temp" class="graph-line" d="M0,120 Q150,80 300,110 T600,70 T900,100 T1000,80" fill="none" stroke="#dc2626" stroke-width="2.5"></path>
+                                <path id="trend-line-temp" fill="none" stroke="#ff4d4d" stroke-width="2"></path>
                                 <!-- Voltage (Green) -->
-                                <path id="trend-line-voltage" class="graph-line" d="M0,170 Q120,220 240,160 T480,180 T720,150 T1000,130" fill="none" stroke="#16a34a" stroke-width="2.5"></path>
+                                <path id="trend-line-voltage" fill="none" stroke="#00e575" stroke-width="2"></path>
+
+                                <!-- Hover guide line -->
+                                <line id="hover-v-line" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" x1="0" x2="0" y1="20" y2="280" style="display: none;"></line>
+                                
+                                <!-- Hover intersection circles -->
+                                <circle id="hover-dot-rpm" r="4" fill="#00d5ff" stroke="white" stroke-width="1.5" style="display: none;"></circle>
+                                <circle id="hover-dot-temp" r="4" fill="#ff4d4d" stroke="white" stroke-width="1.5" style="display: none;"></circle>
+                                <circle id="hover-dot-voltage" r="4" fill="#00e575" stroke="white" stroke-width="1.5" style="display: none;"></circle>
+
+                                <!-- Transparent overlay for hover detection -->
+                                <rect id="chart-hover-overlay" x="0" y="0" width="1000" height="300" fill="transparent" style="cursor: crosshair; pointer-events: all;"></rect>
                             </svg>
-                            <div style="position: absolute; bottom: 0; left: 80px; right: 0; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #3b494c; padding: 8px;">
-                                <span>00:00</span>
-                                <span>06:00</span>
-                                <span>12:00</span>
-                                <span>18:00</span>
-                                <span>24:00</span>
+                            
+                            <!-- Tooltip container -->
+                            <div id="chart-tooltip" style="position: absolute; display: none; background: white; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 8px 12px; pointer-events: none; z-index: 50; font-family: 'JetBrains Mono', monospace; font-size: 11px; min-width: 140px; border: 1px solid #e2e8f0;">
+                                <div id="tooltip-time" style="color: #94a3b8; margin-bottom: 4px; font-weight: bold;">10:22:57 AM</div>
+                                <div style="color: #00d5ff; font-weight: bold; margin-bottom: 2px;">RPM : <span id="tooltip-rpm">0</span></div>
+                                <div style="color: #ff4d4d; font-weight: bold; margin-bottom: 2px;">Temp : <span id="tooltip-temp">32.65930902223024</span></div>
+                                <div style="color: #00e575; font-weight: bold;">Voltage : <span id="tooltip-voltage">15.17175</span></div>
+                            </div>
+
+                            <div id="chart-x-axis" style="position: absolute; bottom: 0; left: 80px; right: 0; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; padding: 8px;">
+                                <span>--:--:--</span>
+                                <span>--:--:--</span>
+                                <span>--:--:--</span>
+                                <span>--:--:--</span>
+                                <span>--:--:--</span>
                             </div>
                         </div>
                     </div>
@@ -1249,6 +1271,7 @@
             document.getElementById('text-ride-time').innerText = formatSecondsToTime(totalRideTimeSeconds);
             document.getElementById('text-trip-val').innerText = tripDistance.toFixed(2);
             document.getElementById('text-trip-time').innerText = formatSecondsToTime(tripRideTimeSeconds);
+            addTelemetryDataPoint(rpmVal, batteryTemp, voltVal);
         }
 
 
@@ -1272,6 +1295,10 @@
         let totalRideTimeSeconds = 149796; // 41 Hours 36 Mins
         let tripDistance = 16.310636;
         let tripRideTimeSeconds = 815;
+
+        // Telemetry Chart History
+        const telemetryHistory = [];
+        const maxHistoryLength = 30;
 
         // Detailed coordinates following actual roads in Visakhapatnam (Depot -> RK Beach -> Beach Road)
         const routeCoordinates = [
@@ -2444,10 +2471,12 @@
 
         // On Load Check
         window.addEventListener('DOMContentLoaded', () => {
+            initTelemetryHistory();
             initializeUI();
             switchTab(activeTab);
             // Connect to live MQTT broker immediately
             connectMQTT();
+            initChartHover();
         });
 
         // Initialize Leaflet Map (Centered in RK Beach / Beach Road)
@@ -2722,16 +2751,168 @@
             if (speedCirc) speedCirc.style.strokeDashoffset = speedOffset;
         }
 
-        function triggerGraphAnimation() {
-            const lines = ['trend-line-rpm', 'trend-line-temp', 'trend-line-voltage'];
-            lines.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.style.animation = 'none';
-                    el.offsetHeight;
-                    el.style.animation = 'drawGraph 2.5s ease-out forwards';
+        // Telemetry chart real-time history and drawing helpers
+        function initTelemetryHistory() {
+            const now = new Date();
+            for (let i = maxHistoryLength - 1; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 1000);
+                telemetryHistory.push({
+                    time: time.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                    rpm: 0,
+                    temp: 32.4 + (Math.random() - 0.5) * 0.2,
+                    voltage: 15.18 + (Math.random() - 0.5) * 0.05
+                });
+            }
+            updateTelemetryChart();
+        }
+
+        function updateTelemetryChart() {
+            const N = telemetryHistory.length;
+            if (N === 0) return;
+            
+            let rpmPoints = [];
+            let tempPoints = [];
+            let voltPoints = [];
+            
+            for (let i = 0; i < N; i++) {
+                const pt = telemetryHistory[i];
+                const x = (i / (N - 1)) * 1000;
+                
+                // Scale values to Y coordinate [20, 280] for range [0, 36]
+                const yRpm = 280 - ((pt.rpm / 100) / 36) * 260;
+                const yTemp = 280 - (pt.temp / 36) * 260;
+                const yVolt = 280 - (pt.voltage / 36) * 260;
+                
+                rpmPoints.push(`${x.toFixed(1)},${yRpm.toFixed(1)}`);
+                tempPoints.push(`${x.toFixed(1)},${yTemp.toFixed(1)}`);
+                voltPoints.push(`${x.toFixed(1)},${yVolt.toFixed(1)}`);
+            }
+            
+            const lineRpm = document.getElementById('trend-line-rpm');
+            const lineTemp = document.getElementById('trend-line-temp');
+            const lineVolt = document.getElementById('trend-line-voltage');
+            
+            if (lineRpm) lineRpm.setAttribute('d', `M${rpmPoints.join(' L')}`);
+            if (lineTemp) lineTemp.setAttribute('d', `M${tempPoints.join(' L')}`);
+            if (lineVolt) lineVolt.setAttribute('d', `M${voltPoints.join(' L')}`);
+            
+            // Update X-axis labels
+            const xLabelsContainer = document.getElementById('chart-x-axis');
+            if (xLabelsContainer) {
+                const xLabels = xLabelsContainer.querySelectorAll('span');
+                if (xLabels.length === 5) {
+                    const indices = [0, Math.floor(N * 0.25), Math.floor(N * 0.5), Math.floor(N * 0.75), N - 1];
+                    indices.forEach((idx, i) => {
+                        if (telemetryHistory[idx]) {
+                            xLabels[i].innerText = telemetryHistory[idx].time;
+                        }
+                    });
+                }
+            }
+        }
+
+        function addTelemetryDataPoint(rpmVal, tempVal, voltVal) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            telemetryHistory.push({
+                time: timeStr,
+                rpm: rpmVal,
+                temp: tempVal,
+                voltage: voltVal
+            });
+            
+            if (telemetryHistory.length > maxHistoryLength) {
+                telemetryHistory.shift();
+            }
+            
+            updateTelemetryChart();
+        }
+
+        function initChartHover() {
+            const container = document.getElementById('chart-container');
+            const overlay = document.getElementById('chart-hover-overlay');
+            const vLine = document.getElementById('hover-v-line');
+            const dotRpm = document.getElementById('hover-dot-rpm');
+            const dotTemp = document.getElementById('hover-dot-temp');
+            const dotVolt = document.getElementById('hover-dot-voltage');
+            const tooltip = document.getElementById('chart-tooltip');
+            
+            if (!overlay || !container) return;
+            
+            const tooltipTime = document.getElementById('tooltip-time');
+            const tooltipRpm = document.getElementById('tooltip-rpm');
+            const tooltipTemp = document.getElementById('tooltip-temp');
+            const tooltipVolt = document.getElementById('tooltip-voltage');
+            
+            overlay.addEventListener('mousemove', (e) => {
+                const rect = overlay.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const percentX = mouseX / rect.width;
+                
+                const N = telemetryHistory.length;
+                if (N === 0) return;
+                
+                const index = Math.max(0, Math.min(N - 1, Math.round(percentX * (N - 1))));
+                const pt = telemetryHistory[index];
+                
+                const xSvg = (index / (N - 1)) * 1000;
+                const yRpm = 280 - ((pt.rpm / 100) / 36) * 260;
+                const yTemp = 280 - (pt.temp / 36) * 260;
+                const yVolt = 280 - (pt.voltage / 36) * 260;
+                
+                if (vLine) {
+                    vLine.setAttribute('x1', xSvg);
+                    vLine.setAttribute('x2', xSvg);
+                    vLine.style.display = 'block';
+                }
+                
+                if (dotRpm) {
+                    dotRpm.setAttribute('cx', xSvg);
+                    dotRpm.setAttribute('cy', yRpm);
+                    dotRpm.style.display = 'block';
+                }
+                
+                if (dotTemp) {
+                    dotTemp.setAttribute('cx', xSvg);
+                    dotTemp.setAttribute('cy', yTemp);
+                    dotTemp.style.display = 'block';
+                }
+                
+                if (dotVolt) {
+                    dotVolt.setAttribute('cx', xSvg);
+                    dotVolt.setAttribute('cy', yVolt);
+                    dotVolt.style.display = 'block';
+                }
+                
+                if (tooltipTime) tooltipTime.innerText = pt.time;
+                if (tooltipRpm) tooltipRpm.innerText = pt.rpm;
+                if (tooltipTemp) tooltipTemp.innerText = pt.temp;
+                if (tooltipVolt) tooltipVolt.innerText = pt.voltage;
+                
+                // Position tooltip
+                if (tooltip) {
+                    const containerRect = container.getBoundingClientRect();
+                    const tooltipX = (xSvg / 1000) * containerRect.width + 80 + 12; // 80px left padding
+                    const tooltipY = (yTemp + yVolt) / 2 / 300 * containerRect.height;
+                    
+                    tooltip.style.left = `${tooltipX}px`;
+                    tooltip.style.top = `${tooltipY}px`;
+                    tooltip.style.display = 'block';
                 }
             });
+            
+            overlay.addEventListener('mouseleave', () => {
+                if (vLine) vLine.style.display = 'none';
+                if (dotRpm) dotRpm.style.display = 'none';
+                if (dotTemp) dotTemp.style.display = 'none';
+                if (dotVolt) dotVolt.style.display = 'none';
+                if (tooltip) tooltip.style.display = 'none';
+            });
+        }
+
+        function triggerGraphAnimation() {
+            updateTelemetryChart();
             
             const effLine = document.getElementById('circ-efficiency');
             if (effLine) {
