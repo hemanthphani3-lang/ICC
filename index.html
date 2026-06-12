@@ -555,91 +555,34 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
                     <!-- Main Energy Chart -->
                     <div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-3xl p-md flex flex-col hover-elevate">
-                        <div class="flex justify-between items-start mb-lg">
-                            <div>
-                                <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Live Telemetry Analytics</h3>
-                                <div class="flex items-center gap-4 mt-2">
-                                    <div class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant">
-                                        <span class="w-3 h-1.5 bg-[#0284c7] rounded-full"></span>
-                                        <span>RPM</span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant">
-                                        <span class="w-3 h-1.5 bg-[#dc2626] rounded-full"></span>
-                                        <span>Temperature</span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant">
-                                        <span class="w-3 h-1.5 bg-[#16a34a] rounded-full"></span>
-                                        <span>Voltage</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="flex justify-between items-center mb-lg">
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Power Consumption Trends</h3>
                             <div class="flex space-x-sm font-label-md text-label-md">
                                 <button class="px-sm py-xs bg-primary-container/20 text-primary border border-outline-variant rounded font-bold">24h</button>
                                 <button class="px-sm py-xs text-on-surface-variant hover:bg-surface-container-high rounded">7d</button>
                                 <button class="px-sm py-xs text-on-surface-variant hover:bg-surface-container-high rounded">30d</button>
                             </div>
                         </div>
-                        <div id="chart-container" class="flex-1 min-h-[300px] relative rounded-lg flex items-end" style="padding-top: 8px; padding-bottom: 8px; padding-right: 8px; padding-left: 80px; background-color: #f8fafc; border: 1px solid #cbd5e1;">
-                            <!-- Y-Axis Labels (Color Coded for RPM, Temp, Voltage) -->
-                            <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 64px; z-index: 10; border-right: 1px solid #cbd5e1; padding-right: 8px;">
-                                <!-- 36 -> top: 6.67% -->
-                                <div style="position: absolute; right: 8px; top: 6.67%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #475569;">36</div>
-                                <!-- 27 -> top: 28.33% -->
-                                <div style="position: absolute; right: 8px; top: 28.33%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #475569;">27</div>
-                                <!-- 18 -> top: 50.00% -->
-                                <div style="position: absolute; right: 8px; top: 50.00%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #475569;">18</div>
-                                <!-- 9 -> top: 71.67% -->
-                                <div style="position: absolute; right: 8px; top: 71.67%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #475569;">9</div>
-                                <!-- 0 -> top: 93.33% -->
-                                <div style="position: absolute; right: 8px; top: 93.33%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; color: #475569;">0</div>
-                            </div>
+                        <div class="flex-1 min-h-[300px] relative data-inset rounded-lg p-sm flex items-end">
                             <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 300">
-                                <!-- Horizontal Grid Lines (Dotted) -->
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="20" y2="20"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="85" y2="85"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="150" y2="150"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="215" y2="215"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="0" x2="1000" y1="280" y2="280"></line>
-                                
-                                <!-- Vertical Grid Lines (Dotted) -->
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="200" x2="200" y1="20" y2="280"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="400" x2="400" y1="20" y2="280"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="600" x2="600" y1="20" y2="280"></line>
-                                <line stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" x1="800" x2="800" y1="20" y2="280"></line>
-
-                                <!-- RPM (Blue) -->
-                                <path id="trend-line-rpm" fill="none" stroke="#0284c7" stroke-width="2"></path>
-                                <!-- Temp (Red) -->
-                                <path id="trend-line-temp" fill="none" stroke="#dc2626" stroke-width="2"></path>
-                                <!-- Voltage (Green) -->
-                                <path id="trend-line-voltage" fill="none" stroke="#16a34a" stroke-width="2"></path>
-
-                                <!-- Hover guide line -->
-                                <line id="hover-v-line" stroke="rgba(0, 0, 0, 0.2)" stroke-width="1" x1="0" x2="0" y1="20" y2="280" style="display: none;"></line>
-                                
-                                <!-- Hover intersection circles -->
-                                <circle id="hover-dot-rpm" r="4" fill="#0284c7" stroke="white" stroke-width="1.5" style="display: none;"></circle>
-                                <circle id="hover-dot-temp" r="4" fill="#dc2626" stroke="white" stroke-width="1.5" style="display: none;"></circle>
-                                <circle id="hover-dot-voltage" r="4" fill="#16a34a" stroke="white" stroke-width="1.5" style="display: none;"></circle>
-
-                                <!-- Transparent overlay for hover detection -->
-                                <rect id="chart-hover-overlay" x="0" y="0" width="1000" height="300" fill="transparent" style="cursor: crosshair; pointer-events: all;"></rect>
+                                <defs>
+                                    <linearGradient id="gradientPrimary" x1="0%" x2="0%" y1="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#006875" stop-opacity="0.25"></stop>
+                                        <stop offset="100%" stop-color="#006875" stop-opacity="0"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="50" y2="50"></line>
+                                <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="150" y2="150"></line>
+                                <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="250" y2="250"></line>
+                                <path d="M0,250 L0,150 Q100,100 200,180 T400,120 T600,80 T800,160 T1000,90 L1000,250 Z" fill="url(#gradientPrimary)"></path>
+                                <path id="trend-line" class="graph-line" d="M0,150 Q100,100 200,180 T400,120 T600,80 T800,160 T1000,90" fill="none" stroke="#006875" stroke-width="2.5"></path>
                             </svg>
-                            
-                            <!-- Tooltip container -->
-                            <div id="chart-tooltip" style="position: absolute; display: none; background: white; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 8px 12px; pointer-events: none; z-index: 50; font-family: 'JetBrains Mono', monospace; font-size: 11px; min-width: 140px; border: 1px solid #cbd5e1;">
-                                <div id="tooltip-time" style="color: #64748b; margin-bottom: 4px; font-weight: bold;">10:22:57 AM</div>
-                                <div style="color: #0284c7; font-weight: bold; margin-bottom: 2px;">RPM : <span id="tooltip-rpm">0</span></div>
-                                <div style="color: #dc2626; font-weight: bold; margin-bottom: 2px;">Temp : <span id="tooltip-temp">32.65930902223024</span></div>
-                                <div style="color: #16a34a; font-weight: bold;">Voltage : <span id="tooltip-voltage">15.17175</span></div>
-                            </div>
-
-                            <div id="chart-x-axis" style="position: absolute; bottom: 0; left: 80px; right: 0; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #475569; padding: 8px;">
-                                <span>--:--:--</span>
-                                <span>--:--:--</span>
-                                <span>--:--:--</span>
-                                <span>--:--:--</span>
-                                <span>--:--:--</span>
+                            <div class="absolute bottom-0 left-0 w-full flex justify-between font-label-md text-[10px] text-on-surface-variant px-sm pb-xs">
+                                <span>00:00</span>
+                                <span>06:00</span>
+                                <span>12:00</span>
+                                <span>18:00</span>
+                                <span>24:00</span>
                             </div>
                         </div>
                     </div>
@@ -1271,7 +1214,6 @@
             document.getElementById('text-ride-time').innerText = formatSecondsToTime(totalRideTimeSeconds);
             document.getElementById('text-trip-val').innerText = tripDistance.toFixed(2);
             document.getElementById('text-trip-time').innerText = formatSecondsToTime(tripRideTimeSeconds);
-            addTelemetryDataPoint(rpmVal, batteryTemp, voltVal);
         }
 
 
@@ -1295,10 +1237,6 @@
         let totalRideTimeSeconds = 149796; // 41 Hours 36 Mins
         let tripDistance = 16.310636;
         let tripRideTimeSeconds = 815;
-
-        // Telemetry Chart History
-        const telemetryHistory = [];
-        const maxHistoryLength = 30;
 
         // Detailed coordinates following actual roads in Visakhapatnam (Depot -> RK Beach -> Beach Road)
         const routeCoordinates = [
@@ -2471,12 +2409,10 @@
 
         // On Load Check
         window.addEventListener('DOMContentLoaded', () => {
-            initTelemetryHistory();
             initializeUI();
             switchTab(activeTab);
             // Connect to live MQTT broker immediately
             connectMQTT();
-            initChartHover();
         });
 
         // Initialize Leaflet Map (Centered in RK Beach / Beach Road)
@@ -2630,50 +2566,18 @@
                     updateBatteryUI(batterySOC, voltage);
                 }
 
-                let simTimeSec = 0;
-                let simCurrentTemp = 32.4;
-
                 // Start the simulation loop
                 simulationInterval = setInterval(() => {
-                    // Drive Cycle Simulation (30-second cycle)
-                    const cycleTime = simTimeSec % 30;
-                    simTimeSec++;
+                    // Generate simulated telemetry values (steady state with no movement)
+                    speed = 0;
+                    rpm = 0;
                     
-                    if (cycleTime < 5) {
-                        // Phase 1: Idle (0-5s)
-                        rpm = 0;
-                        speed = 0;
-                    } else if (cycleTime < 12) {
-                        // Phase 2: Acceleration (5-12s)
-                        const t = cycleTime - 5;
-                        rpm = Math.round((t / 7) * 2200); // Accelerates to 2200 RPM
-                        speed = Math.round((t / 7) * 45); // Speed up to 45 km/h
-                    } else if (cycleTime < 18) {
-                        // Phase 3: Cruising (12-18s)
-                        rpm = 2200 + Math.round((Math.random() - 0.5) * 50); // slight flutter
-                        speed = 45;
-                    } else if (cycleTime < 24) {
-                        // Phase 4: Deceleration (18-24s)
-                        const t = cycleTime - 18;
-                        rpm = Math.max(0, Math.round(2200 - (t / 6) * 2200));
-                        speed = Math.max(0, Math.round(45 - (t / 6) * 45));
-                    } else {
-                        // Phase 5: Stationary (24-30s)
-                        rpm = 0;
-                        speed = 0;
-                    }
-
-                    batterySOC -= 0.02; // slow discharge
+                    batterySOC -= 0.05;
                     if (batterySOC <= 15) {
                         batterySOC = 99;
                     }
-                    
-                    // Base voltage scaled to SOC (e.g. 15.18V for 92% SOC)
-                    const baseVoltage = (batterySOC / 100) * 16.5;
-                    // Voltage sag proportional to RPM
-                    const voltageSag = (rpm / 2200) * 0.8; // max 0.8V sag
-                    voltage = baseVoltage - voltageSag + (Math.random() - 0.5) * 0.05;
-                    if (voltage < 0) voltage = 0;
+                    // Voltage is scaled to match SOC (volt = SOC * 16.5 / 100)
+                    voltage = (batterySOC / 100) * 16.5;
 
                     // Increment local simulation trip distance and query route coordinates (on land, following streets)
                     const distanceIncrement = speed / 3600;
@@ -2682,24 +2586,15 @@
                     mapLatitude = routeCoords[0];
                     mapLongitude = routeCoords[1];
 
-                    // Calculate realistic current: negative value when discharging, proportional to speed/RPM
-                    const simulatedCurrent = speed > 0 ? -(speed * 0.12 + 0.3 + (Math.random() - 0.5) * 0.1) : -0.2;
-
-                    // Heat generation: Temp rises when RPM > 0, cools down towards ambient 28.0 when RPM == 0
-                    if (rpm > 0) {
-                        simCurrentTemp += (rpm / 2200) * 0.12; // temp rises
-                    } else {
-                        simCurrentTemp -= (simCurrentTemp - 28.0) * 0.03; // temp cools
-                    }
-                    // Clamp simulated temperature to a realistic range
-                    simCurrentTemp = Math.max(28.0, Math.min(42.0, simCurrentTemp));
+                    // Calculate realistic current: negative value when discharging
+                    const simulatedCurrent = speed > 0 ? -(speed * 0.15 + 0.5 + (Math.random() - 0.5) * 0.1) : -0.2;
 
                     const payload = {
                         RPM: rpm,
-                        V: parseFloat(voltage.toFixed(2)),
+                        V: voltage,
                         C: parseFloat(simulatedCurrent.toFixed(2)),
-                        T: parseFloat((simCurrentTemp + (Math.random() - 0.5) * 0.1).toFixed(2)),
-                        VIB: rpm > 0 ? (Math.random() > 0.85 ? 1 : 0) : 0, // minor vibration shock when moving
+                        T: 32.4 + (Math.random() - 0.5),
+                        VIB: 0,
                         RELAY: 1,
                         LAT: mapLatitude,
                         LON: mapLongitude
@@ -2792,168 +2687,13 @@
             if (speedCirc) speedCirc.style.strokeDashoffset = speedOffset;
         }
 
-        // Telemetry chart real-time history and drawing helpers
-        function initTelemetryHistory() {
-            const now = new Date();
-            for (let i = maxHistoryLength - 1; i >= 0; i--) {
-                const time = new Date(now.getTime() - i * 1000);
-                telemetryHistory.push({
-                    time: time.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                    rpm: 0,
-                    temp: 32.4 + (Math.random() - 0.5) * 0.2,
-                    voltage: 15.18 + (Math.random() - 0.5) * 0.05
-                });
-            }
-            updateTelemetryChart();
-        }
-
-        function updateTelemetryChart() {
-            const N = telemetryHistory.length;
-            if (N === 0) return;
-            
-            let rpmPoints = [];
-            let tempPoints = [];
-            let voltPoints = [];
-            
-            for (let i = 0; i < N; i++) {
-                const pt = telemetryHistory[i];
-                const x = (i / (N - 1)) * 1000;
-                
-                // Scale values to Y coordinate [20, 280] for range [0, 36]
-                const yRpm = 280 - ((pt.rpm / 100) / 36) * 260;
-                const yTemp = 280 - (pt.temp / 36) * 260;
-                const yVolt = 280 - (pt.voltage / 36) * 260;
-                
-                rpmPoints.push(`${x.toFixed(1)},${yRpm.toFixed(1)}`);
-                tempPoints.push(`${x.toFixed(1)},${yTemp.toFixed(1)}`);
-                voltPoints.push(`${x.toFixed(1)},${yVolt.toFixed(1)}`);
-            }
-            
-            const lineRpm = document.getElementById('trend-line-rpm');
-            const lineTemp = document.getElementById('trend-line-temp');
-            const lineVolt = document.getElementById('trend-line-voltage');
-            
-            if (lineRpm) lineRpm.setAttribute('d', `M${rpmPoints.join(' L')}`);
-            if (lineTemp) lineTemp.setAttribute('d', `M${tempPoints.join(' L')}`);
-            if (lineVolt) lineVolt.setAttribute('d', `M${voltPoints.join(' L')}`);
-            
-            // Update X-axis labels
-            const xLabelsContainer = document.getElementById('chart-x-axis');
-            if (xLabelsContainer) {
-                const xLabels = xLabelsContainer.querySelectorAll('span');
-                if (xLabels.length === 5) {
-                    const indices = [0, Math.floor(N * 0.25), Math.floor(N * 0.5), Math.floor(N * 0.75), N - 1];
-                    indices.forEach((idx, i) => {
-                        if (telemetryHistory[idx]) {
-                            xLabels[i].innerText = telemetryHistory[idx].time;
-                        }
-                    });
-                }
-            }
-        }
-
-        function addTelemetryDataPoint(rpmVal, tempVal, voltVal) {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            telemetryHistory.push({
-                time: timeStr,
-                rpm: rpmVal,
-                temp: tempVal,
-                voltage: voltVal
-            });
-            
-            if (telemetryHistory.length > maxHistoryLength) {
-                telemetryHistory.shift();
-            }
-            
-            updateTelemetryChart();
-        }
-
-        function initChartHover() {
-            const container = document.getElementById('chart-container');
-            const overlay = document.getElementById('chart-hover-overlay');
-            const vLine = document.getElementById('hover-v-line');
-            const dotRpm = document.getElementById('hover-dot-rpm');
-            const dotTemp = document.getElementById('hover-dot-temp');
-            const dotVolt = document.getElementById('hover-dot-voltage');
-            const tooltip = document.getElementById('chart-tooltip');
-            
-            if (!overlay || !container) return;
-            
-            const tooltipTime = document.getElementById('tooltip-time');
-            const tooltipRpm = document.getElementById('tooltip-rpm');
-            const tooltipTemp = document.getElementById('tooltip-temp');
-            const tooltipVolt = document.getElementById('tooltip-voltage');
-            
-            overlay.addEventListener('mousemove', (e) => {
-                const rect = overlay.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const percentX = mouseX / rect.width;
-                
-                const N = telemetryHistory.length;
-                if (N === 0) return;
-                
-                const index = Math.max(0, Math.min(N - 1, Math.round(percentX * (N - 1))));
-                const pt = telemetryHistory[index];
-                
-                const xSvg = (index / (N - 1)) * 1000;
-                const yRpm = 280 - ((pt.rpm / 100) / 36) * 260;
-                const yTemp = 280 - (pt.temp / 36) * 260;
-                const yVolt = 280 - (pt.voltage / 36) * 260;
-                
-                if (vLine) {
-                    vLine.setAttribute('x1', xSvg);
-                    vLine.setAttribute('x2', xSvg);
-                    vLine.style.display = 'block';
-                }
-                
-                if (dotRpm) {
-                    dotRpm.setAttribute('cx', xSvg);
-                    dotRpm.setAttribute('cy', yRpm);
-                    dotRpm.style.display = 'block';
-                }
-                
-                if (dotTemp) {
-                    dotTemp.setAttribute('cx', xSvg);
-                    dotTemp.setAttribute('cy', yTemp);
-                    dotTemp.style.display = 'block';
-                }
-                
-                if (dotVolt) {
-                    dotVolt.setAttribute('cx', xSvg);
-                    dotVolt.setAttribute('cy', yVolt);
-                    dotVolt.style.display = 'block';
-                }
-                
-                if (tooltipTime) tooltipTime.innerText = pt.time;
-                if (tooltipRpm) tooltipRpm.innerText = pt.rpm;
-                if (tooltipTemp) tooltipTemp.innerText = pt.temp;
-                if (tooltipVolt) tooltipVolt.innerText = pt.voltage;
-                
-                // Position tooltip
-                if (tooltip) {
-                    const containerRect = container.getBoundingClientRect();
-                    const tooltipX = (xSvg / 1000) * containerRect.width + 80 + 12; // 80px left padding
-                    const tooltipY = (yTemp + yVolt) / 2 / 300 * containerRect.height;
-                    
-                    tooltip.style.left = `${tooltipX}px`;
-                    tooltip.style.top = `${tooltipY}px`;
-                    tooltip.style.display = 'block';
-                }
-            });
-            
-            overlay.addEventListener('mouseleave', () => {
-                if (vLine) vLine.style.display = 'none';
-                if (dotRpm) dotRpm.style.display = 'none';
-                if (dotTemp) dotTemp.style.display = 'none';
-                if (dotVolt) dotVolt.style.display = 'none';
-                if (tooltip) tooltip.style.display = 'none';
-            });
-        }
-
         function triggerGraphAnimation() {
-            updateTelemetryChart();
+            const line = document.getElementById('trend-line');
+            if (line) {
+                line.style.animation = 'none';
+                line.offsetHeight;
+                line.style.animation = 'drawGraph 2.5s ease-out forwards';
+            }
             
             const effLine = document.getElementById('circ-efficiency');
             if (effLine) {
