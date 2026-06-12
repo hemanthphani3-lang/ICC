@@ -579,7 +579,28 @@
                                 <button class="px-sm py-xs text-on-surface-variant hover:bg-surface-container-high rounded">30d</button>
                             </div>
                         </div>
-                        <div class="flex-1 min-h-[300px] relative data-inset rounded-lg p-sm flex items-end">
+                        <div class="flex-1 min-h-[300px] relative data-inset rounded-lg flex items-end" style="padding-top: 8px; padding-bottom: 8px; padding-right: 8px; padding-left: 80px;">
+                            <!-- Y-Axis Labels (Color Coded for RPM, Temp, Voltage) -->
+                            <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 64px; z-index: 10; border-right: 1px solid rgba(186, 201, 204, 0.3); padding-right: 8px;">
+                                <!-- Top (y = 50 line level -> 16.67%) -->
+                                <div style="position: absolute; right: 8px; top: 16.67%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: bold;">
+                                    <span style="color: #0284c7;">5000 RPM</span>
+                                    <span style="color: #dc2626;">50 °C</span>
+                                    <span style="color: #16a34a;">400 V</span>
+                                </div>
+                                <!-- Middle (y = 150 line level -> 50%) -->
+                                <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: bold;">
+                                    <span style="color: #0284c7;">2500 RPM</span>
+                                    <span style="color: #dc2626;">30 °C</span>
+                                    <span style="color: #16a34a;">200 V</span>
+                                </div>
+                                <!-- Bottom (y = 250 line level -> 83.33%) -->
+                                <div style="position: absolute; right: 8px; top: 83.33%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: bold;">
+                                    <span style="color: #0284c7;">0 RPM</span>
+                                    <span style="color: #dc2626;">10 °C</span>
+                                    <span style="color: #16a34a;">0 V</span>
+                                </div>
+                            </div>
                             <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 300">
                                 <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="50" y2="50"></line>
                                 <line stroke="#e2e8f0" stroke-width="1" x1="0" x2="1000" y1="150" y2="150"></line>
@@ -591,7 +612,7 @@
                                 <!-- Voltage (Green) -->
                                 <path id="trend-line-voltage" class="graph-line" d="M0,170 Q120,220 240,160 T480,180 T720,150 T1000,130" fill="none" stroke="#16a34a" stroke-width="2.5"></path>
                             </svg>
-                            <div class="absolute bottom-0 left-0 w-full flex justify-between font-label-md text-[10px] text-on-surface-variant px-sm pb-xs">
+                            <div style="position: absolute; bottom: 0; left: 80px; right: 0; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #3b494c; padding: 8px;">
                                 <span>00:00</span>
                                 <span>06:00</span>
                                 <span>12:00</span>
